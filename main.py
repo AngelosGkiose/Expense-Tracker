@@ -1,36 +1,26 @@
 import json
 
+from expense_tracker_system import ExpenseTrackerSystem
+
 FILE_NAME = "expenses.json"
 
 
 def show_menu():
     print("""===== Expense Tracker =====
 
-1. View Expenses
+1. View All Expenses
 2. Add Expense
 3. Delete Expense
 4. Edit Expense
-5. Show Total Expenses
-6. Exit
+5. View All Categories
+6. Add Category
+7. Total Expenses
+8. Spending by Category
+9. Monthly Report
+10. Exit
 """)
 
 
-def load_data():
-    try:
-        with open(FILE_NAME, "r", encoding="utf-8") as json_file:
-            return json.load(json_file)
-
-    except FileNotFoundError:
-        return []
-
-    except json.JSONDecodeError:
-        print("Invalid JSON file. Starting with an empty expense list.")
-        return []
-
-
-def save_data(expenses):
-    with open(FILE_NAME, "w", encoding="utf-8") as json_file:
-        json.dump(expenses, json_file, indent=4)
 
 
 def get_user_input():
@@ -48,13 +38,26 @@ def get_user_input():
             print("Please enter a valid number.")
 
 
-def view_expenses(expenses):
-    if not expenses:
-        print("No expenses found.")
-        return
 
-    for index, expense in enumerate(expenses, start=1):
-        print(f"{index}. {expense['title']} - €{expense['amount']:.2f}")
+
+def main():
+    system=ExpenseTrackerSystem()
+    while True:
+        show_menu()
+        user_choice = get_user_input()
+        if user_choice == 1:
+            system.handle_view_expenses()
+        elif user_choice == 2:
+            system.handle_add_expense()
+        elif user_choice == 3:
+            system.handle_delete_expense()
+        elif user_choice == 4:
+            edit_expense(expenses)
+        elif user_choice == 5:
+            show_total_expenses(expenses)
+        elif user_choice == 6:
+            print("Thank you for using Expense Tracker!")
+            break
 
 
 def add_expense(expenses):
@@ -196,24 +199,7 @@ def show_total_expenses(expenses):
     print(f"Total: €{total_expenses:.2f}")
 
 
-def main():
-    expenses = load_data()
-    while True:
-        show_menu()
-        user_choice = get_user_input()
-        if user_choice == 1:
-            view_expenses(expenses)
-        elif user_choice == 2:
-            add_expense(expenses)
-        elif user_choice == 3:
-            delete_expense(expenses)
-        elif user_choice == 4:
-            edit_expense(expenses)
-        elif user_choice == 5:
-            show_total_expenses(expenses)
-        elif user_choice == 6:
-            print("Thank you for using Expense Tracker!")
-            break
+
 
 
 if __name__ == '__main__':
