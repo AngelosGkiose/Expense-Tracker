@@ -106,9 +106,46 @@ class ExpenseTrackerSystem:
         print(expense)
         print("Leave empty to keep the current value.")
         expense_title=input(f"New title [{expense.title}]: ").strip()
-        expense_amount=(input("New expense amount: "))
-        expense_category_id=(input("New expense category id: "))
-        
+        expense_amount=(input("New expense amount: ")).strip()
+        expense_category_id=(input("New expense category id: ")).strip()
+        if expense_amount:
+            try:
+                amount = float(expense_amount)
+
+                if amount <= 0:
+                    print("amount must be greater than 0.")
+                    return
+
+            except ValueError:
+                print("Age must be an integer.")
+                return
+
+            expense.amount = amount
+        if expense_category_id:
+            try:
+                category_id = int(expense_category_id)
+                if category_id <= 0:
+                    print("Category id must be greater than 0.")
+                    return
+                found_category = self.database.get_category_by_id(category_id)
+                if found_category is None:
+                    print("No such category found\n")
+                    return
+            except ValueError:
+                print("Category id  must be an integer.")
+                return
+            expense.category_id=found_category.category_id
+
+        if expense_title:
+            expense.title  = expense_title
+        success=self.database.update_expense(expense)
+        if success:
+            print("Successfully updated expense")
+        else:
+            print("Failed to update expense")
+
+
+
 
 
 

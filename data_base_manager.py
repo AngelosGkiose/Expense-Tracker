@@ -78,8 +78,8 @@ class DataBaseManager:
             return False
 
     def update_expense(self,expense):
-        sql="Update expenses  set title=?,amount=?,category_id=?,date=? where id=?"
-        values=(expense.title,expense.amount,expense.category_id,expense.date)
+        sql="Update expenses  set title=?,amount=?,category_id=? where id=?"
+        values=(expense.title,expense.amount,expense.category_id)
         try:
             self.cursor.execute(sql, values)
             self.connection.commit()
