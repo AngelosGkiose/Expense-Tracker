@@ -1,7 +1,7 @@
 import sqlite3
 
 from category import Category
-from expense import Expense
+from EXPENSE import Expense
 
 
 class DataBaseManager:
@@ -79,7 +79,7 @@ class DataBaseManager:
 
     def update_expense(self,expense):
         sql="Update expenses  set title=?,amount=?,category_id=? where id=?"
-        values=(expense.title,expense.amount,expense.category_id)
+        values=(expense.title,expense.amount,expense.category_id,expense.expense_id)
         try:
             self.cursor.execute(sql, values)
             self.connection.commit()
@@ -87,6 +87,59 @@ class DataBaseManager:
 
         except sqlite3.IntegrityError:
             return False
+
+    def add_category(self,category):
+        sql="Select name from categories where name=?"
+        values=(category.name,)
+        self.cursor.execute(sql, values)
+        category_name=self.cursor.fetchone()
+        if category_name is not None:
+            return False
+        sql="Insert into categories(name) values (?)"
+        values=(category.name,)
+        self.cursor.execute(sql, values)
+        self.connection.commit()
+        category.category_id = self.cursor.lastrowid
+        return True
+
+    def has_expenses(self,category):
+        self.cursor.execute("SELECT * FROM expenses WHERE category_id=?",(category.category_id,))
+        rows=self.cursor.fetchone()
+        if rows is not None:
+            return True
+        return False
+
+    def delete_category(self, category):
+        sql = "DELETE FROM categories WHERE id = ?"
+
+        try:
+            self.cursor.execute(
+                sql,
+                (category.category_id,)
+            )
+            self.connection.commit()
+
+            return self.cursor.rowcount > 0
+
+        except sqlite3.IntegrityError:
+            self.connection.rollback()
+            return False
+
+    def get_spending_by_category(self):
+        self.cursor.execute("Select categories.name,SUM(expenses.amount) from expenses join categories on expenses.category_id=categories.id GROUP BY categories.id, categories.name ORDER BY SUM(expenses.amount) DESC")
+        rows=self.cursor.fetchall()
+        return rows
+
+    def get_monthly_report(self,month_filter):
+        sql="Select expenses.id,expenses.title,expenses.amount,categories.name,expenses.date from expenses join categories on expenses.category_id=categories.id WHERE strftime('%Y-%m', expenses.date) = ? ORDER BY expenses.date, expenses.id"
+        values=(month_filter,)
+        self.cursor.execute(sql, values)
+        rows=self.cursor.fetchall()
+        sql="SELECT SUM(amount) FROM expenses WHERE strftime('%Y-%m', date) = ?"
+        values=(month_filter,)
+        self.cursor.execute(sql, values)
+        total=self.cursor.fetchone()
+        return rows,total[0]
 
 
 
