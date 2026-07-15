@@ -64,7 +64,7 @@ def main():
         elif user_choice == 8:
             system.handle_get_spending_by_category()
         elif user_choice == 9:
-            pass
+            system.handle_monthly_report()
         elif user_choice == 10:
             print("Thank you for using Expense Tracker!")
             break
