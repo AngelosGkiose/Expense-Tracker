@@ -141,6 +141,9 @@ class DataBaseManager:
         total=self.cursor.fetchone()
         return rows,total[0]
 
+    def close_connection(self):
+        self.connection.close()
+
 
 
 

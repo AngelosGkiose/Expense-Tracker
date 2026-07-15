@@ -30,8 +30,8 @@ def get_user_input():
         try:
             choice = int(input("Enter your choice: "))
 
-            if choice not in range(1, 7):
-                print("Please enter a number between 1 and 6.")
+            if choice not in range(1, 11):
+                print("Please enter a number between 1 and 10.")
                 continue
 
             return choice
