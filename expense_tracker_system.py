@@ -214,7 +214,7 @@ class ExpenseTrackerSystem:
         for category in categories:
             print(category)
         while True:
-            expense_category_id = input("New expense category id ""(leave empty to keep current): ").strip()
+            expense_category_id = input("New expense category id (leave empty to keep current): ").strip()
             if not expense_category_id:
                 found_category = None
                 break
@@ -256,9 +256,7 @@ class ExpenseTrackerSystem:
     def handle_add_category(self):
         while True:
             category_name = input(
-                "Enter category name "
-                "(0 to cancel): "
-            ).strip().title()
+                "Enter category name (0 to cancel): ").strip().title()
             if category_name == "0":
                 print("Operation cancelled.")
                 return
