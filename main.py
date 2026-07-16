@@ -44,30 +44,33 @@ def get_user_input():
 
 def main():
     system=ExpenseTrackerSystem()
-    while True:
-        show_menu()
-        user_choice = get_user_input()
-        if user_choice == 1:
-            system.handle_view_expenses()
-        elif user_choice == 2:
-            system.handle_add_expense()
-        elif user_choice == 3:
-            system.handle_update_expense()
-        elif user_choice == 4:
-            system.handle_delete_expense()
-        elif user_choice == 5:
-            system.handle_view_categories()
-        elif user_choice == 6:
-            system.handle_add_category()
-        elif user_choice == 7:
-            system.handle_delete_category()
-        elif user_choice == 8:
-            system.handle_get_spending_by_category()
-        elif user_choice == 9:
-            system.handle_monthly_report()
-        elif user_choice == 10:
-            print("Thank you for using Expense Tracker!")
-            break
+    try:
+        while True:
+            show_menu()
+            user_choice = get_user_input()
+            if user_choice == 1:
+                system.handle_view_expenses()
+            elif user_choice == 2:
+                system.handle_add_expense()
+            elif user_choice == 3:
+                system.handle_update_expense()
+            elif user_choice == 4:
+                system.handle_delete_expense()
+            elif user_choice == 5:
+                system.handle_view_categories()
+            elif user_choice == 6:
+                system.handle_add_category()
+            elif user_choice == 7:
+                system.handle_delete_category()
+            elif user_choice == 8:
+                system.handle_get_spending_by_category()
+            elif user_choice == 9:
+                system.handle_monthly_report()
+            elif user_choice == 10:
+                print("Thank you for using Expense Tracker!")
+                break
+    finally:
+        system.close()
 
 
 

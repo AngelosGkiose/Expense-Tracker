@@ -320,7 +320,8 @@ class ExpenseTrackerSystem:
         print("-----------------------------------------------------------")
         print(f"Total Expenses: ${total_amount} ")
 
-
+    def close(self):
+        self.database.close_connection()
 
 
 
